@@ -3,6 +3,9 @@
     "pages/index/index",
     "pages/menu/menu",
     "pages/cart/cart",
+    "pages/product/detail",
+    "pages/order/success",
+    "pages/orders/detail",
     "pages/orders/orders",
     "pages/profile/profile"
   ],

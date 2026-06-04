@@ -1,29 +1,38 @@
 const { formatMoney } = require("../../utils/format");
+const { listProducts } = require("../../services/menu");
 
 Page({
   data: {
-    recommendations: [
-      {
-        id: "latte",
-        name: "榛果拿铁",
-        description: "浓缩咖啡、蒸汽牛奶与榛果香气。",
-        priceCents: 2800
-      },
-      {
-        id: "americano",
-        name: "冰美式",
-        description: "清爽干净，适合午后提神。",
-        priceCents: 2200
-      }
-    ]
+    recommendations: [],
+    loading: true
   },
 
   onLoad() {
-    this.setData({
-      recommendations: this.data.recommendations.map((item) => ({
-        ...item,
-        priceText: formatMoney(item.priceCents)
-      }))
+    this.loadRecommendations();
+  },
+
+  async loadRecommendations() {
+    this.setData({ loading: true });
+    try {
+      const products = await listProducts();
+      this.setData({
+        recommendations: (products || []).slice(0, 3).map((item) => ({
+          ...item,
+          priceText: formatMoney(item.priceCents)
+        })),
+        loading: false
+      });
+    } catch (error) {
+      this.setData({
+        recommendations: [],
+        loading: false
+      });
+    }
+  },
+
+  openProduct(event) {
+    wx.navigateTo({
+      url: `/pages/product/detail?id=${event.currentTarget.dataset.id}`
     });
   },
 

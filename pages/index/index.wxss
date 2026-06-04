@@ -36,6 +36,11 @@
   margin-top: 20rpx;
 }
 
+.recommend-empty {
+  padding: 48rpx 0;
+  color: #777777;
+}
+
 .recommend-item {
   padding: 28rpx 0;
   border-bottom: 2rpx solid #ebe4da;

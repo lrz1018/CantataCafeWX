@@ -1,0 +1,31 @@
+<view class="page product-detail-page">
+  <view wx:if="{{loading}}" class="state">商品加载中...</view>
+  <view wx:elif="{{error}}" class="state error">{{error}}</view>
+
+  <block wx:else>
+    <view class="image-wrap">
+      <image wx:if="{{product.imageSrc}}" class="product-image" src="{{product.imageSrc}}" mode="aspectFill" />
+      <view wx:else class="image-placeholder">{{product.itemInitial}}</view>
+    </view>
+
+    <view class="product-main">
+      <view class="product-name">{{product.name}}</view>
+      <view class="product-desc">{{product.descriptionText}}</view>
+      <view class="product-meta">
+        <view class="price">{{product.priceText}}</view>
+        <view class="stock {{product.soldOut ? 'sold-out' : ''}}">{{product.stockText}}</view>
+      </view>
+    </view>
+
+    <view class="footer">
+      <button class="ghost-button footer-button" bindtap="goCart">购物车</button>
+      <button
+        class="primary-button footer-button"
+        disabled="{{product.soldOut}}"
+        bindtap="addToCart"
+      >
+        {{product.addText}}
+      </button>
+    </view>
+  </block>
+</view>

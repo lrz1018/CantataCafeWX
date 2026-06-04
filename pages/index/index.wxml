@@ -7,8 +7,10 @@
 
   <view class="section">
     <view class="section-title">今日推荐</view>
-    <view class="recommend-list">
-      <view wx:for="{{recommendations}}" wx:key="id" class="recommend-item">
+    <view wx:if="{{loading}}" class="recommend-empty">推荐加载中...</view>
+    <view wx:elif="{{!recommendations.length}}" class="recommend-empty">暂无推荐商品</view>
+    <view wx:else class="recommend-list">
+      <view wx:for="{{recommendations}}" wx:key="id" class="recommend-item" bindtap="openProduct" data-id="{{item.id}}">
         <view class="recommend-name">{{item.name}}</view>
         <view class="recommend-desc">{{item.description}}</view>
         <view class="recommend-price">{{item.priceText}}</view>

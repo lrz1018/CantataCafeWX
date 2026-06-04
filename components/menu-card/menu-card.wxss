@@ -62,6 +62,16 @@
   font-weight: 700;
 }
 
+.stock {
+  margin-top: 4rpx;
+  color: #777777;
+  font-size: 22rpx;
+}
+
+.stock.sold-out {
+  color: #b45a3c;
+}
+
 .add-button {
   min-width: 112rpx;
   height: 56rpx;
@@ -76,4 +86,9 @@
 
 .add-button::after {
   border: 0;
+}
+
+.add-button.disabled {
+  color: #777777;
+  background: #ebe4da;
 }

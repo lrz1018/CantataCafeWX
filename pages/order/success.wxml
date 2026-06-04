@@ -1,0 +1,34 @@
+<view class="page success-page">
+  <view wx:if="{{loading && !order}}" class="state">订单加载中...</view>
+
+  <block wx:elif="{{order}}">
+    <view class="success-header">
+      <view class="success-title">下单成功</view>
+      <view class="pickup-label">取餐号</view>
+      <view class="pickup-no">{{order.pickupNo}}</view>
+      <view class="status">{{order.statusText}}</view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">订单明细</view>
+      <view class="item-list">
+        <view wx:for="{{order.items}}" wx:key="productId" class="order-product">
+          <view>
+            <view class="product-name">{{item.productName}}</view>
+            <view class="product-meta">{{item.unitPriceText}} x {{item.quantity}}</view>
+          </view>
+          <view class="subtotal">{{item.subtotalText}}</view>
+        </view>
+      </view>
+      <view wx:if="{{order.remark}}" class="remark">备注：{{order.remark}}</view>
+      <view class="total">合计 {{order.totalText}}</view>
+    </view>
+
+    <view class="actions">
+      <button class="ghost-button action-button" bindtap="goMenu">继续点单</button>
+      <button class="primary-button action-button" bindtap="openOrderDetail">查看订单</button>
+    </view>
+  </block>
+
+  <view wx:else class="state error">订单加载失败</view>
+</view>

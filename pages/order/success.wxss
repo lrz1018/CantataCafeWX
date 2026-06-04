@@ -1,0 +1,95 @@
+.success-page {
+  padding-bottom: 48rpx;
+}
+
+.success-header {
+  padding: 44rpx 32rpx;
+  border-radius: 8rpx;
+  color: #ffffff;
+  background: #1f1f1f;
+  text-align: center;
+}
+
+.success-title {
+  font-size: 36rpx;
+  font-weight: 800;
+}
+
+.pickup-label {
+  margin-top: 34rpx;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 26rpx;
+}
+
+.pickup-no {
+  margin-top: 8rpx;
+  font-size: 96rpx;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.status {
+  margin-top: 24rpx;
+  color: #f1d4a8;
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+.item-list {
+  margin-top: 20rpx;
+  border-top: 2rpx solid #ebe4da;
+}
+
+.order-product {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 0;
+  border-bottom: 2rpx solid #ebe4da;
+}
+
+.product-name {
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+.product-meta,
+.remark {
+  margin-top: 8rpx;
+  color: #777777;
+  font-size: 24rpx;
+}
+
+.subtotal,
+.total {
+  color: #1f1f1f;
+  font-weight: 800;
+}
+
+.total {
+  margin-top: 24rpx;
+  color: #7a4d2b;
+  font-size: 36rpx;
+  text-align: right;
+}
+
+.actions {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 36rpx;
+}
+
+.action-button {
+  flex: 1;
+  margin: 0;
+}
+
+.state {
+  padding: 180rpx 24rpx;
+  color: #777777;
+  text-align: center;
+}
+
+.state.error {
+  color: #7a4d2b;
+}

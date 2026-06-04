@@ -1,4 +1,16 @@
 <view class="page menu-page">
+  <swiper wx:if="{{banners.length}}" class="banner-swiper" indicator-dots autoplay circular>
+    <swiper-item wx:for="{{banners}}" wx:key="id">
+      <image
+        class="banner-image"
+        src="{{item.imageSrc}}"
+        mode="aspectFill"
+        bindtap="handleBannerTap"
+        data-link="{{item.linkUrl}}"
+      />
+    </swiper-item>
+  </swiper>
+
   <scroll-view class="category-bar" scroll-x="true" show-scrollbar="false">
     <view class="category-list">
       <view
@@ -13,12 +25,18 @@
     </view>
   </scroll-view>
 
-  <view class="product-list">
+  <view wx:if="{{loading}}" class="state">菜单加载中...</view>
+  <view wx:elif="{{error}}" class="state error">{{error}}</view>
+  <view wx:elif="{{!categories.length || !products.length}}" class="state">暂无可点商品</view>
+  <view wx:elif="{{!filteredProducts.length}}" class="state">当前分类暂无商品</view>
+
+  <view wx:else class="product-list">
     <menu-card
       wx:for="{{filteredProducts}}"
       wx:key="id"
       item="{{item}}"
       bind:add="addToCart"
+      bind:open="openProduct"
     />
   </view>
 </view>

@@ -1,0 +1,93 @@
+.order-detail-page {
+  padding-bottom: 48rpx;
+}
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 36rpx 32rpx;
+  border-radius: 8rpx;
+  color: #ffffff;
+  background: #1f1f1f;
+}
+
+.pickup-label {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 24rpx;
+}
+
+.pickup-no {
+  margin-top: 6rpx;
+  font-size: 64rpx;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.status {
+  color: #f1d4a8;
+  font-size: 30rpx;
+  font-weight: 800;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24rpx;
+  padding: 28rpx 0;
+  border-bottom: 2rpx solid #ebe4da;
+  color: #777777;
+  font-size: 26rpx;
+}
+
+.remark-row {
+  align-items: flex-start;
+}
+
+.item-list {
+  margin-top: 20rpx;
+  border-top: 2rpx solid #ebe4da;
+}
+
+.order-product {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 0;
+  border-bottom: 2rpx solid #ebe4da;
+}
+
+.product-name {
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+.product-meta {
+  margin-top: 8rpx;
+  color: #777777;
+  font-size: 24rpx;
+}
+
+.subtotal,
+.total {
+  color: #1f1f1f;
+  font-weight: 800;
+}
+
+.total {
+  margin-top: 24rpx;
+  color: #7a4d2b;
+  font-size: 36rpx;
+  text-align: right;
+}
+
+.state {
+  padding: 180rpx 24rpx;
+  color: #777777;
+  text-align: center;
+}
+
+.state.error {
+  color: #7a4d2b;
+}

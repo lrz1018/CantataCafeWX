@@ -1,0 +1,37 @@
+<view class="page order-detail-page">
+  <view wx:if="{{loading && !order}}" class="state">订单加载中...</view>
+  <view wx:elif="{{error && !order}}" class="state error">{{error}}</view>
+
+  <block wx:else>
+    <view class="detail-header">
+      <view>
+        <view class="pickup-label">取餐号</view>
+        <view class="pickup-no">{{order.pickupNo}}</view>
+      </view>
+      <view class="status">{{order.statusText}}</view>
+    </view>
+
+    <view class="info-row">
+      <text>下单时间</text>
+      <text>{{order.createdAtText}}</text>
+    </view>
+    <view wx:if="{{order.remark}}" class="info-row remark-row">
+      <text>备注</text>
+      <text>{{order.remark}}</text>
+    </view>
+
+    <view class="section">
+      <view class="section-title">商品快照</view>
+      <view class="item-list">
+        <view wx:for="{{order.items}}" wx:key="productId" class="order-product">
+          <view>
+            <view class="product-name">{{item.productName}}</view>
+            <view class="product-meta">{{item.unitPriceText}} x {{item.quantity}}</view>
+          </view>
+          <view class="subtotal">{{item.subtotalText}}</view>
+        </view>
+      </view>
+      <view class="total">合计 {{order.totalText}}</view>
+    </view>
+  </block>
+</view>

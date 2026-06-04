@@ -18,6 +18,14 @@
   font-weight: 800;
 }
 
+.avatar-image {
+  width: 128rpx;
+  height: 128rpx;
+  flex: none;
+  border-radius: 8rpx;
+  background: #e4d8c9;
+}
+
 .profile-main {
   min-width: 0;
 }
@@ -48,4 +56,32 @@
 
 .action-row::after {
   border: 0;
+}
+
+.form-list {
+  margin-top: 20rpx;
+  border-top: 2rpx solid #ebe4da;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  min-height: 96rpx;
+  border-bottom: 2rpx solid #ebe4da;
+}
+
+.form-label {
+  width: 140rpx;
+  color: #777777;
+}
+
+.form-input {
+  min-width: 0;
+  flex: 1;
+  color: #1f1f1f;
+  font-size: 30rpx;
+}
+
+.save-button {
+  margin-top: 28rpx;
 }
