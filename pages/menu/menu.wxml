@@ -39,4 +39,54 @@
       bind:open="openProduct"
     />
   </view>
+
+  <view wx:if="{{cartSheetVisible}}" class="cart-sheet-mask" catchtap="closeCartSheet"></view>
+  <view wx:if="{{cartSheetVisible}}" class="cart-sheet" catchtap="stopPropagation">
+    <view class="cart-sheet-header">
+      <view>
+        <view class="cart-sheet-title">购物车</view>
+        <view class="cart-sheet-subtitle">{{cart.length ? '调整商品数量' : '购物车为空'}}</view>
+      </view>
+    </view>
+
+    <view wx:if="{{cart.length}}" class="cart-list">
+      <view wx:for="{{cart}}" wx:key="productId" class="cart-item">
+        <view class="cart-item-main">
+          <view class="cart-item-name">{{item.name}}</view>
+          <view class="cart-item-price">{{item.priceText}}</view>
+          <view wx:if="{{item.stockEnabled}}" class="cart-item-stock">剩余 {{item.stockQuantity}}</view>
+        </view>
+        <view class="counter">
+          <button class="counter-button" catchtap="decrease" data-id="{{item.productId}}">-</button>
+          <text class="count">{{item.quantity}}</text>
+          <button class="counter-button" catchtap="increase" data-id="{{item.productId}}">+</button>
+        </view>
+      </view>
+    </view>
+
+    <view wx:else class="cart-empty">
+      <view class="cart-empty-title">购物车为空</view>
+      <view class="cart-empty-desc">从菜单中添加喜欢的咖啡。</view>
+    </view>
+  </view>
+
+  <view class="cart-bar">
+    <view class="cart-total" bindtap="openCartSheet">
+      <view class="cart-total-label">合计</view>
+      <view class="cart-total-price">{{totalText}}</view>
+    </view>
+    <view
+      class="checkout-button {{submitting || !cart.length ? 'disabled' : ''}}"
+      catchtap="checkoutFromBar"
+    >
+      {{submitting ? '提交中' : '下单'}}
+    </view>
+    <view
+      class="cart-toggle-button"
+      aria-label="{{cartSheetVisible ? '收起购物车' : '展开购物车'}}"
+      catchtap="toggleCartSheet"
+    >
+      <view class="cart-toggle-icon {{cartSheetVisible ? 'expanded' : 'collapsed'}}"></view>
+    </view>
+  </view>
 </view>

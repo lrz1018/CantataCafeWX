@@ -92,8 +92,9 @@ Page({
   },
 
   goCart() {
+    app.markMenuCartSheetOpen();
     wx.switchTab({
-      url: "/pages/cart/cart"
+      url: "/pages/menu/menu"
     });
   }
 });

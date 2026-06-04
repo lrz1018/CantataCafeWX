@@ -4,7 +4,8 @@ App({
     token: "",
     tokenType: "Bearer",
     cart: [],
-    catalogNeedsRefresh: false
+    catalogNeedsRefresh: false,
+    menuCartSheetNeedsOpen: false
   },
 
   onLaunch() {
@@ -84,5 +85,15 @@ App({
     const dirty = this.globalData.catalogNeedsRefresh;
     this.globalData.catalogNeedsRefresh = false;
     return dirty;
+  },
+
+  markMenuCartSheetOpen() {
+    this.globalData.menuCartSheetNeedsOpen = true;
+  },
+
+  consumeMenuCartSheetOpen() {
+    const shouldOpen = this.globalData.menuCartSheetNeedsOpen;
+    this.globalData.menuCartSheetNeedsOpen = false;
+    return shouldOpen;
   }
 });

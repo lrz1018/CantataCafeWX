@@ -2,7 +2,6 @@
   "pages": [
     "pages/index/index",
     "pages/menu/menu",
-    "pages/cart/cart",
     "pages/product/detail",
     "pages/order/success",
     "pages/orders/detail",
@@ -29,10 +28,6 @@
       {
         "pagePath": "pages/menu/menu",
         "text": "菜单"
-      },
-      {
-        "pagePath": "pages/cart/cart",
-        "text": "购物车"
       },
       {
         "pagePath": "pages/orders/orders",
