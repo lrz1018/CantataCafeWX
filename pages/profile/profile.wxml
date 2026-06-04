@@ -1,0 +1,17 @@
+<view class="page profile-page">
+  <view class="profile-header">
+    <view class="avatar">{{userInitial}}</view>
+    <view class="profile-main">
+      <view class="nickname">{{nickname}}</view>
+      <view class="muted">Cantata Cafe 会员</view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">账户</view>
+    <view class="action-list">
+      <button class="action-row" bindtap="login">微信登录</button>
+      <button class="action-row" bindtap="clearCart">清空购物车</button>
+    </view>
+  </view>
+</view>

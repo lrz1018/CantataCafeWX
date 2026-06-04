@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "菜单",
+  "usingComponents": {
+    "menu-card": "/components/menu-card/menu-card"
+  }
+}

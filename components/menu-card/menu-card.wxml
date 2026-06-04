@@ -1,0 +1,15 @@
+<view class="menu-card">
+  <view class="image-wrap">
+    <image wx:if="{{item.imageUrl}}" class="product-image" src="{{item.imageUrl}}" mode="aspectFill" />
+    <view wx:else class="image-placeholder">{{itemInitial}}</view>
+  </view>
+
+  <view class="content">
+    <view class="name">{{item.name}}</view>
+    <view class="desc">{{item.description}}</view>
+    <view class="meta">
+      <text class="price">{{priceText}}</text>
+      <button class="add-button" bindtap="handleAdd">加入</button>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,9 @@
+{
+  "desc": "Cantata Cafe sitemap",
+  "rules": [
+    {
+      "action": "allow",
+      "page": "*"
+    }
+  ]
+}

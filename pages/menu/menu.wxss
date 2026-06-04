@@ -1,0 +1,38 @@
+.menu-page {
+  padding-top: 24rpx;
+}
+
+.category-bar {
+  white-space: nowrap;
+}
+
+.category-list {
+  display: flex;
+  gap: 16rpx;
+  padding-bottom: 20rpx;
+}
+
+.category-item {
+  flex: none;
+  min-width: 128rpx;
+  height: 64rpx;
+  padding: 0 28rpx;
+  border: 2rpx solid #d8d0c4;
+  border-radius: 8rpx;
+  color: #4a4a4a;
+  background: #ffffff;
+  font-size: 26rpx;
+  line-height: 60rpx;
+  text-align: center;
+}
+
+.category-item.active {
+  border-color: #1f1f1f;
+  color: #ffffff;
+  background: #1f1f1f;
+}
+
+.product-list {
+  margin-top: 12rpx;
+  padding: 0 4rpx 48rpx;
+}

@@ -1,0 +1,51 @@
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  padding: 32rpx 0 16rpx;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 128rpx;
+  height: 128rpx;
+  border-radius: 8rpx;
+  color: #ffffff;
+  background: #1f1f1f;
+  font-size: 48rpx;
+  font-weight: 800;
+}
+
+.profile-main {
+  min-width: 0;
+}
+
+.nickname {
+  font-size: 36rpx;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.action-list {
+  margin-top: 20rpx;
+  border-top: 2rpx solid #ebe4da;
+}
+
+.action-row {
+  height: 96rpx;
+  margin: 0;
+  padding: 0;
+  border-bottom: 2rpx solid #ebe4da;
+  border-radius: 0;
+  color: #1f1f1f;
+  background: transparent;
+  font-size: 30rpx;
+  line-height: 96rpx;
+  text-align: left;
+}
+
+.action-row::after {
+  border: 0;
+}

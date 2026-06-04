@@ -1,0 +1,18 @@
+<view class="page orders-page">
+  <view wx:for="{{orders}}" wx:key="id" class="order-item">
+    <view class="order-header">
+      <view class="order-number">{{item.number}}</view>
+      <view class="order-status">{{item.statusText}}</view>
+    </view>
+    <view class="order-products">{{item.products}}</view>
+    <view class="order-footer">
+      <text>{{item.createdAt}}</text>
+      <text class="order-total">{{item.totalText}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{!orders.length}}" class="empty">
+    <view class="empty-title">暂无订单</view>
+    <view class="empty-desc">完成点单后会出现在这里。</view>
+  </view>
+</view>

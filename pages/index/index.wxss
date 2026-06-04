@@ -1,0 +1,61 @@
+.home-page {
+  padding-bottom: 48rpx;
+}
+
+.hero {
+  min-height: 420rpx;
+  padding: 48rpx 40rpx;
+  border-radius: 8rpx;
+  color: #ffffff;
+  background: linear-gradient(135deg, #1f1f1f 0%, #4b3324 100%);
+}
+
+.hero-title {
+  max-width: 520rpx;
+  font-size: 64rpx;
+  font-weight: 800;
+  line-height: 1.05;
+}
+
+.hero-subtitle {
+  max-width: 520rpx;
+  margin-top: 28rpx;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 30rpx;
+  line-height: 1.5;
+}
+
+.hero-action {
+  width: 240rpx;
+  margin: 52rpx 0 0;
+  background: #ffffff;
+  color: #1f1f1f;
+}
+
+.recommend-list {
+  margin-top: 20rpx;
+}
+
+.recommend-item {
+  padding: 28rpx 0;
+  border-bottom: 2rpx solid #ebe4da;
+}
+
+.recommend-name {
+  font-size: 32rpx;
+  font-weight: 700;
+}
+
+.recommend-desc {
+  margin-top: 8rpx;
+  color: #777777;
+  font-size: 24rpx;
+  line-height: 1.45;
+}
+
+.recommend-price {
+  margin-top: 12rpx;
+  color: #7a4d2b;
+  font-size: 30rpx;
+  font-weight: 700;
+}

@@ -1,0 +1,24 @@
+<view class="page menu-page">
+  <scroll-view class="category-bar" scroll-x="true" show-scrollbar="false">
+    <view class="category-list">
+      <view
+        wx:for="{{categories}}"
+        wx:key="id"
+        class="category-item {{activeCategoryId === item.id ? 'active' : ''}}"
+        bindtap="selectCategory"
+        data-id="{{item.id}}"
+      >
+        {{item.name}}
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="product-list">
+    <menu-card
+      wx:for="{{filteredProducts}}"
+      wx:key="id"
+      item="{{item}}"
+      bind:add="addToCart"
+    />
+  </view>
+</view>

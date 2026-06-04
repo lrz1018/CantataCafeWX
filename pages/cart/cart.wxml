@@ -1,0 +1,31 @@
+<view class="page cart-page">
+  <block wx:if="{{cart.length}}">
+    <view class="cart-list">
+      <view wx:for="{{cart}}" wx:key="id" class="cart-item">
+        <view class="item-main">
+          <view class="item-name">{{item.name}}</view>
+          <view class="item-price">{{item.priceText}}</view>
+        </view>
+        <view class="counter">
+          <button class="counter-button" bindtap="decrease" data-id="{{item.id}}">-</button>
+          <text class="count">{{item.count}}</text>
+          <button class="counter-button" bindtap="increase" data-id="{{item.id}}">+</button>
+        </view>
+      </view>
+    </view>
+
+    <view class="summary">
+      <view>
+        <view class="summary-label">合计</view>
+        <view class="summary-price">{{totalText}}</view>
+      </view>
+      <button class="primary-button checkout-button" bindtap="checkout">去结算</button>
+    </view>
+  </block>
+
+  <view wx:else class="empty">
+    <view class="empty-title">购物车为空</view>
+    <view class="empty-desc">去菜单挑选一杯咖啡。</view>
+    <button class="primary-button empty-action" bindtap="goMenu">去点单</button>
+  </view>
+</view>

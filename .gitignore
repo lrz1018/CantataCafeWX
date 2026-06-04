@@ -1,0 +1,17 @@
+# WeChat DevTools
+project.private.config.json
+.idea/
+
+# macOS
+.DS_Store
+
+# npm, if dependencies are added later
+node_modules/
+miniprogram_npm/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build outputs
+dist/
+coverage/

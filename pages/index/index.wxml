@@ -1,0 +1,18 @@
+<view class="page home-page">
+  <view class="hero">
+    <view class="hero-title">Cantata Cafe</view>
+    <view class="hero-subtitle">一杯咖啡的时间，安排好今天的节奏。</view>
+    <button class="primary-button hero-action" bindtap="goMenu">开始点单</button>
+  </view>
+
+  <view class="section">
+    <view class="section-title">今日推荐</view>
+    <view class="recommend-list">
+      <view wx:for="{{recommendations}}" wx:key="id" class="recommend-item">
+        <view class="recommend-name">{{item.name}}</view>
+        <view class="recommend-desc">{{item.description}}</view>
+        <view class="recommend-price">{{item.priceText}}</view>
+      </view>
+    </view>
+  </view>
+</view>
