@@ -190,14 +190,6 @@ Page({
     this.setData({ cartSheetVisible: false });
   },
 
-  toggleCartSheet() {
-    if (this.data.cartSheetVisible) {
-      this.closeCartSheet();
-    } else {
-      this.openCartSheet();
-    }
-  },
-
   stopPropagation() {},
 
   increase(event) {

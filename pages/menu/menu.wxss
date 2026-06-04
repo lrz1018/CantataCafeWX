@@ -88,7 +88,13 @@
 .cart-sheet-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 24rpx;
   padding-bottom: 12rpx;
+}
+
+.cart-sheet-heading {
+  min-width: 0;
 }
 
 .cart-sheet-title {
@@ -101,6 +107,50 @@
   margin-top: 6rpx;
   color: #777777;
   font-size: 24rpx;
+}
+
+.cart-sheet-close {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56rpx;
+  height: 56rpx;
+  flex: none;
+  margin: 0;
+  padding: 0;
+  border-radius: 8rpx;
+  background: #f6f4ef;
+}
+
+.cart-sheet-close::after {
+  border: 0;
+}
+
+.cart-sheet-close-icon {
+  position: relative;
+  width: 24rpx;
+  height: 24rpx;
+}
+
+.cart-sheet-close-icon::before,
+.cart-sheet-close-icon::after {
+  position: absolute;
+  top: 11rpx;
+  left: 1rpx;
+  width: 22rpx;
+  height: 3rpx;
+  border-radius: 999rpx;
+  background: #1f1f1f;
+  content: "";
+}
+
+.cart-sheet-close-icon::before {
+  transform: rotate(45deg);
+}
+
+.cart-sheet-close-icon::after {
+  transform: rotate(-45deg);
 }
 
 .cart-list {
@@ -197,6 +247,7 @@
   bottom: 0;
   left: 0;
   z-index: 40;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -209,7 +260,11 @@
 
 .cart-total {
   min-width: 0;
+  height: 60rpx;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .cart-total-label {
@@ -243,37 +298,4 @@
 
 .checkout-button.disabled {
   opacity: 0.55;
-}
-
-.cart-toggle-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 60rpx;
-  height: 60rpx;
-  flex: none;
-  align-self: center;
-  margin: 0;
-  padding: 0;
-  border-radius: 8rpx;
-  background: #f6f4ef;
-}
-
-.cart-toggle-button::after {
-  border: 0;
-}
-
-.cart-toggle-icon {
-  width: 0;
-  height: 0;
-  border-right: 7rpx solid transparent;
-  border-left: 7rpx solid transparent;
-}
-
-.cart-toggle-icon.collapsed {
-  border-bottom: 9rpx solid #1f1f1f;
-}
-
-.cart-toggle-icon.expanded {
-  border-top: 9rpx solid #1f1f1f;
 }

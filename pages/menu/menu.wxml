@@ -43,10 +43,13 @@
   <view wx:if="{{cartSheetVisible}}" class="cart-sheet-mask" catchtap="closeCartSheet"></view>
   <view wx:if="{{cartSheetVisible}}" class="cart-sheet" catchtap="stopPropagation">
     <view class="cart-sheet-header">
-      <view>
+      <view class="cart-sheet-heading">
         <view class="cart-sheet-title">购物车</view>
         <view class="cart-sheet-subtitle">{{cart.length ? '调整商品数量' : '购物车为空'}}</view>
       </view>
+      <button class="cart-sheet-close" aria-label="关闭购物车" catchtap="closeCartSheet">
+        <view class="cart-sheet-close-icon"></view>
+      </button>
     </view>
 
     <view wx:if="{{cart.length}}" class="cart-list">
@@ -80,13 +83,6 @@
       catchtap="checkoutFromBar"
     >
       {{submitting ? '提交中' : '下单'}}
-    </view>
-    <view
-      class="cart-toggle-button"
-      aria-label="{{cartSheetVisible ? '收起购物车' : '展开购物车'}}"
-      catchtap="toggleCartSheet"
-    >
-      <view class="cart-toggle-icon {{cartSheetVisible ? 'expanded' : 'collapsed'}}"></view>
     </view>
   </view>
 </view>
