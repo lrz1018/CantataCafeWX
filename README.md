@@ -1,5 +1,7 @@
 # CantataCafeWX
 
+CantataCafe 微信小程序源码仓库。
+
 微信小程序前端基础框架，面向咖啡点单场景。
 
 ## 项目结构
