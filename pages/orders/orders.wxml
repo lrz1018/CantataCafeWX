@@ -24,7 +24,10 @@
       <view class="order-products">{{item.products}}</view>
       <view class="order-footer">
         <text>{{item.createdAtText}}</text>
-        <text class="order-total">{{item.totalText}}</text>
+        <view class="order-amount">
+          <text wx:if="{{item.hasDiscount}}" class="order-discount">{{item.memberCard.name}} -{{item.discountText}}</text>
+          <text class="order-total">{{item.totalText}}</text>
+        </view>
       </view>
     </view>
   </block>

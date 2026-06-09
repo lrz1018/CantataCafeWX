@@ -44,6 +44,23 @@
   font-weight: 700;
 }
 
+.order-amount {
+  display: flex;
+  min-width: 0;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.order-discount {
+  max-width: 360rpx;
+  overflow: hidden;
+  color: #7a4d2b;
+  font-size: 22rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .empty {
   padding-top: 180rpx;
   text-align: center;

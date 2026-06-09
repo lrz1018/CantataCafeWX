@@ -36,6 +36,59 @@ function getStatusText(status) {
   return map[status] || status || "";
 }
 
+function getMemberCardTypeText(type) {
+  const map = {
+    HALF_PRICE: "每日半价卡",
+    FREE_ITEM: "每日免单卡"
+  };
+
+  return map[type] || type || "";
+}
+
+function getMemberCardSourceText(source) {
+  const map = {
+    PURCHASE: "购买获得",
+    MANUAL: "后台发放"
+  };
+
+  return map[source] || source || "";
+}
+
+function getMemberCardStatusText(card = {}) {
+  if (card.expired) {
+    return "已过期";
+  }
+
+  if (card.status === "DISABLED") {
+    return "已禁用";
+  }
+
+  if (card.usedToday) {
+    return "今日已用";
+  }
+
+  if (card.status === "ACTIVE") {
+    return "可用";
+  }
+
+  return card.status || "";
+}
+
+function getMemberCardPurchaseStatusText(status) {
+  const map = {
+    PENDING: "支付结果确认中",
+    PAID: "已支付",
+    FAILED: "支付失败",
+    CLOSED: "已关闭"
+  };
+
+  return map[status] || status || "";
+}
+
+function summarizeProducts(products = []) {
+  return products.map((item) => item.name).filter(Boolean).join("、");
+}
+
 function normalizeImageUrl(url) {
   if (!url) {
     return "";
@@ -61,6 +114,11 @@ module.exports = {
   formatCount,
   formatDateTime,
   getStatusText,
+  getMemberCardTypeText,
+  getMemberCardSourceText,
+  getMemberCardStatusText,
+  getMemberCardPurchaseStatusText,
   normalizeImageUrl,
-  summarizeOrderItems
+  summarizeOrderItems,
+  summarizeProducts
 };

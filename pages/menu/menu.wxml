@@ -52,20 +52,65 @@
       </button>
     </view>
 
-    <view wx:if="{{cart.length}}" class="cart-list">
-      <view wx:for="{{cart}}" wx:key="productId" class="cart-item">
-        <view class="cart-item-main">
-          <view class="cart-item-name">{{item.name}}</view>
-          <view class="cart-item-price">{{item.priceText}}</view>
-          <view wx:if="{{item.stockEnabled}}" class="cart-item-stock">剩余 {{item.stockQuantity}}</view>
-        </view>
-        <view class="counter">
-          <button class="counter-button" catchtap="decrease" data-id="{{item.productId}}">-</button>
-          <text class="count">{{item.quantity}}</text>
-          <button class="counter-button" catchtap="increase" data-id="{{item.productId}}">+</button>
+    <block wx:if="{{cart.length}}">
+      <view class="cart-list">
+        <view wx:for="{{cart}}" wx:key="productId" class="cart-item">
+          <view class="cart-item-main">
+            <view class="cart-item-name">{{item.name}}</view>
+            <view class="cart-item-price">{{item.priceText}}</view>
+            <view wx:if="{{item.stockEnabled}}" class="cart-item-stock">剩余 {{item.stockQuantity}}</view>
+          </view>
+          <view class="counter">
+            <button class="counter-button" catchtap="decrease" data-id="{{item.productId}}">-</button>
+            <text class="count">{{item.quantity}}</text>
+            <button class="counter-button" catchtap="increase" data-id="{{item.productId}}">+</button>
+          </view>
         </view>
       </view>
-    </view>
+
+      <view class="member-card-checkout">
+        <view class="member-card-header">
+          <view>
+            <view class="member-card-title">会员卡优惠</view>
+            <view class="member-card-subtitle">{{memberCardLoading ? '加载中...' : memberCardSummary}}</view>
+          </view>
+          <view wx:if="{{selectedMemberCardId}}" class="member-card-clear" catchtap="clearMemberCard">不使用</view>
+        </view>
+
+        <view wx:if="{{memberCardError}}" class="member-card-empty">{{memberCardError}}</view>
+        <view wx:elif="{{!availableMemberCards.length}}" class="member-card-empty">暂无可用会员卡</view>
+        <scroll-view wx:else class="member-card-scroll" scroll-x="true" show-scrollbar="false">
+          <view class="member-card-options">
+            <view
+              wx:for="{{availableMemberCards}}"
+              wx:key="id"
+              class="member-card-option {{selectedMemberCardId === item.id ? 'selected' : ''}}"
+              catchtap="selectMemberCard"
+              data-id="{{item.id}}"
+            >
+              <view class="member-card-option-name">{{item.name}}</view>
+              <view class="member-card-option-meta">{{item.typeText}} · {{item.discountProductName}}</view>
+              <view class="member-card-option-discount">预计优惠 {{item.discountText}}</view>
+            </view>
+          </view>
+        </scroll-view>
+
+        <view wx:if="{{selectedMemberCard}}" class="member-card-estimate">
+          <view class="estimate-row">
+            <text>优惠商品</text>
+            <text>{{selectedMemberCard.discountProductName}}</text>
+          </view>
+          <view class="estimate-row">
+            <text>预计优惠</text>
+            <text>-{{discountText}}</text>
+          </view>
+          <view class="estimate-row payable">
+            <text>预计实付</text>
+            <text>{{estimatedPayableText}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
 
     <view wx:else class="cart-empty">
       <view class="cart-empty-title">购物车为空</view>

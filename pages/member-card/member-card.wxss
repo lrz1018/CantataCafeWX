@@ -1,0 +1,162 @@
+.member-card-page {
+  padding-bottom: 56rpx;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24rpx;
+}
+
+.section-subtitle {
+  min-width: 0;
+  max-width: 340rpx;
+  color: #777777;
+  font-size: 22rpx;
+  line-height: 1.35;
+  text-align: right;
+}
+
+.purchase-status {
+  padding: 20rpx 24rpx;
+  border-radius: 8rpx;
+  color: #7a4d2b;
+  background: #fff7ec;
+  font-size: 26rpx;
+  font-weight: 700;
+}
+
+.card-list {
+  margin-top: 20rpx;
+}
+
+.member-card-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24rpx;
+  padding: 28rpx 0;
+  border-bottom: 2rpx solid #ebe4da;
+}
+
+.member-card-item.owned {
+  align-items: flex-start;
+}
+
+.muted-card {
+  opacity: 0.66;
+}
+
+.card-main {
+  min-width: 0;
+  flex: 1;
+}
+
+.card-title-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.card-name {
+  min-width: 0;
+  overflow: hidden;
+  color: #1f1f1f;
+  font-size: 32rpx;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-pill {
+  flex: none;
+  padding: 6rpx 12rpx;
+  border-radius: 8rpx;
+  color: #7a4d2b;
+  background: #f1d4a8;
+  font-size: 22rpx;
+  font-weight: 700;
+}
+
+.muted-pill {
+  color: #777777;
+  background: #ebe4da;
+}
+
+.card-price {
+  margin-top: 14rpx;
+  color: #7a4d2b;
+  font-size: 38rpx;
+  font-weight: 900;
+}
+
+.card-meta,
+.card-products {
+  margin-top: 10rpx;
+  color: #777777;
+  font-size: 24rpx;
+  line-height: 1.45;
+}
+
+.card-products {
+  color: #4a4a4a;
+}
+
+.buy-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 128rpx;
+  height: 64rpx;
+  flex: none;
+  margin: 0;
+  padding: 0;
+  border-radius: 8rpx;
+  color: #ffffff;
+  background: #7a4d2b;
+  font-size: 26rpx;
+  font-weight: 700;
+}
+
+.buy-button::after {
+  border: 0;
+}
+
+.buy-button.disabled {
+  opacity: 0.55;
+}
+
+.empty-box {
+  margin-top: 20rpx;
+  padding: 48rpx 24rpx;
+  border: 2rpx dashed #d8d0c4;
+  border-radius: 8rpx;
+  color: #777777;
+  text-align: center;
+}
+
+.state {
+  padding: 180rpx 24rpx;
+  color: #777777;
+  text-align: center;
+}
+
+.state.compact {
+  padding: 28rpx 0 0;
+}
+
+.state-title {
+  color: #1f1f1f;
+  font-size: 34rpx;
+  font-weight: 800;
+}
+
+.state-action {
+  width: 240rpx;
+  margin: 48rpx auto 0;
+}
+
+.state.error {
+  color: #7a4d2b;
+}

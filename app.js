@@ -4,6 +4,8 @@ App({
     token: "",
     tokenType: "Bearer",
     cart: [],
+    memberCards: [],
+    memberCardsNeedRefresh: false,
     catalogNeedsRefresh: false,
     menuCartSheetNeedsOpen: false
   },
@@ -42,6 +44,7 @@ App({
     this.globalData.token = token;
     this.globalData.tokenType = tokenType;
     this.globalData.userInfo = userInfo;
+    this.markMemberCardsDirty();
     wx.setStorageSync("token", token);
     wx.setStorageSync("tokenType", tokenType);
     wx.setStorageSync("userInfo", userInfo);
@@ -63,6 +66,8 @@ App({
     this.globalData.token = "";
     this.globalData.tokenType = "Bearer";
     this.globalData.userInfo = null;
+    this.globalData.memberCards = [];
+    this.globalData.memberCardsNeedRefresh = false;
     wx.removeStorageSync("token");
     wx.removeStorageSync("tokenType");
     wx.removeStorageSync("userInfo");
@@ -75,6 +80,21 @@ App({
 
   clearCart() {
     this.setCart([]);
+  },
+
+  setMemberCards(cards) {
+    this.globalData.memberCards = Array.isArray(cards) ? cards : [];
+    this.globalData.memberCardsNeedRefresh = false;
+  },
+
+  markMemberCardsDirty() {
+    this.globalData.memberCardsNeedRefresh = true;
+  },
+
+  consumeMemberCardsDirty() {
+    const dirty = this.globalData.memberCardsNeedRefresh;
+    this.globalData.memberCardsNeedRefresh = false;
+    return dirty;
   },
 
   markCatalogDirty() {

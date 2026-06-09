@@ -1,0 +1,66 @@
+<view class="page member-card-page">
+  <view wx:if="{{loading}}" class="state">会员卡加载中...</view>
+
+  <view wx:elif="{{loginRequired}}" class="state">
+    <view class="state-title">登录后查看会员卡</view>
+    <button class="primary-button state-action" bindtap="loginAndLoad">微信登录</button>
+  </view>
+
+  <block wx:else>
+    <view wx:if="{{purchaseStatusText}}" class="purchase-status">{{purchaseStatusText}}</view>
+    <view wx:if="{{error}}" class="state error compact">{{error}}</view>
+
+    <view class="section">
+      <view class="section-header">
+        <view class="section-title">可购买会员卡</view>
+        <view class="section-subtitle">每日优惠以最终订单金额为准</view>
+      </view>
+
+      <view wx:if="{{!templates.length}}" class="empty-box">暂无可购买会员卡</view>
+      <view wx:else class="card-list">
+        <view wx:for="{{templates}}" wx:key="id" class="member-card-item">
+          <view class="card-main">
+            <view class="card-title-row">
+              <view class="card-name">{{item.name}}</view>
+              <view class="card-pill">{{item.typeText}}</view>
+            </view>
+            <view class="card-price">{{item.priceText}}</view>
+            <view class="card-meta">有效期 {{item.validityText}}</view>
+            <view class="card-products">适用：{{item.productText}}</view>
+          </view>
+          <button
+            class="buy-button {{item.disabled || purchasingTemplateId ? 'disabled' : ''}}"
+            disabled="{{item.disabled || purchasingTemplateId}}"
+            loading="{{purchasingTemplateId === item.id}}"
+            bindtap="buyTemplate"
+            data-id="{{item.id}}"
+          >
+            {{item.disabled ? '已下架' : '购买'}}
+          </button>
+        </view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-header">
+        <view class="section-title">我的会员卡</view>
+        <view class="section-subtitle">下单后今日使用状态会自动更新</view>
+      </view>
+
+      <view wx:if="{{!myCards.length}}" class="empty-box">暂无会员卡</view>
+      <view wx:else class="card-list">
+        <view wx:for="{{myCards}}" wx:key="id" class="member-card-item owned {{item.unusable ? 'muted-card' : ''}}">
+          <view class="card-main">
+            <view class="card-title-row">
+              <view class="card-name">{{item.name}}</view>
+              <view class="card-pill {{item.unusable ? 'muted-pill' : ''}}">{{item.statusText}}</view>
+            </view>
+            <view class="card-meta">{{item.typeText}} · {{item.sourceText}}</view>
+            <view class="card-meta">到期 {{item.expiresAtText}}</view>
+            <view class="card-products">适用：{{item.productText}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

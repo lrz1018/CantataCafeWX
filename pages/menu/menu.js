@@ -1,8 +1,9 @@
 const app = getApp();
 const { listBanners, listCategories, listProducts, getProduct } = require("../../services/menu");
 const { createOrder } = require("../../services/order");
+const { listMemberCards } = require("../../services/member-card");
 const { ensureLogin } = require("../../utils/auth");
-const { formatMoney, normalizeImageUrl } = require("../../utils/format");
+const { formatMoney, getMemberCardTypeText, normalizeImageUrl } = require("../../utils/format");
 
 Page({
   data: {
@@ -14,6 +15,15 @@ Page({
     cart: [],
     totalText: "¥0.00",
     cartSheetVisible: false,
+    memberCardLoading: false,
+    memberCardError: "",
+    memberCards: [],
+    availableMemberCards: [],
+    selectedMemberCardId: "",
+    selectedMemberCard: null,
+    memberCardSummary: "未使用会员卡",
+    discountText: "¥0.00",
+    estimatedPayableText: "¥0.00",
     submitting: false,
     loading: true,
     error: ""
@@ -28,6 +38,10 @@ Page({
       this.loadMenu();
     }
     this.refreshCart();
+
+    if (app.globalData.token && (app.consumeMemberCardsDirty() || !app.globalData.memberCards.length)) {
+      this.loadMemberCards({ toast: false });
+    }
 
     if (app.consumeMenuCartSheetOpen()) {
       this.openCartSheet();
@@ -78,11 +92,103 @@ Page({
       priceText: formatMoney(item.unitPriceCents)
     }));
     const total = cart.reduce((sum, item) => sum + item.unitPriceCents * item.quantity, 0);
+    const memberCardState = this.getMemberCardState(cart, total, this.data.selectedMemberCardId);
 
     this.setData({
       cart,
-      totalText: formatMoney(total)
+      totalText: formatMoney(total),
+      ...memberCardState
     });
+  },
+
+  calculateCartTotal(cart) {
+    return cart.reduce((sum, item) => sum + item.unitPriceCents * item.quantity, 0);
+  },
+
+  getMemberCardState(cart, total, selectedId) {
+    const cards = (app.globalData.memberCards || []).map((card) => this.normalizeCheckoutMemberCard(card, cart));
+    const availableMemberCards = cards.filter((card) => card.available);
+    const selectedMemberCard = availableMemberCards.find((card) => card.id === selectedId) || null;
+    const discountCents = selectedMemberCard ? selectedMemberCard.discountCents : 0;
+    const estimatedPayableCents = Math.max(total - discountCents, 0);
+
+    return {
+      memberCards: cards,
+      availableMemberCards,
+      selectedMemberCardId: selectedMemberCard ? selectedMemberCard.id : "",
+      selectedMemberCard,
+      memberCardSummary: selectedMemberCard
+        ? `${selectedMemberCard.name}，预计优惠 ${formatMoney(discountCents)}`
+        : "未使用会员卡",
+      discountText: formatMoney(discountCents),
+      estimatedPayableText: formatMoney(estimatedPayableCents)
+    };
+  },
+
+  normalizeCheckoutMemberCard(card, cart) {
+    const base = {
+      ...card,
+      typeText: getMemberCardTypeText(card.type),
+      productText: (card.products || []).map((item) => item.name).filter(Boolean).join("、"),
+      available: false,
+      disabledReason: "",
+      discountProductName: "",
+      discountCents: 0,
+      discountText: formatMoney(0),
+      estimatedPayableText: formatMoney(this.calculateCartTotal(cart))
+    };
+
+    if (card.status !== "ACTIVE" || card.expired) {
+      return { ...base, disabledReason: "会员卡已失效" };
+    }
+
+    if (card.usedToday) {
+      return { ...base, disabledReason: "今日已使用" };
+    }
+
+    const productIds = (card.products || []).map((item) => item.id);
+    const target = cart
+      .filter((item) => productIds.includes(item.productId))
+      .sort((a, b) => Number(b.unitPriceCents || 0) - Number(a.unitPriceCents || 0))[0];
+
+    if (!target) {
+      return { ...base, disabledReason: "当前购物车不可用" };
+    }
+
+    const unitPriceCents = Number(target.unitPriceCents || 0);
+    const discountCents = card.type === "HALF_PRICE" ? Math.floor(unitPriceCents / 2) : unitPriceCents;
+    const estimatedPayableCents = Math.max(this.calculateCartTotal(cart) - discountCents, 0);
+
+    return {
+      ...base,
+      available: true,
+      discountProductName: target.name,
+      discountCents,
+      discountText: formatMoney(discountCents),
+      estimatedPayableText: formatMoney(estimatedPayableCents)
+    };
+  },
+
+  async loadMemberCards(options = {}) {
+    if (!app.globalData.token) {
+      app.setMemberCards([]);
+      this.refreshCart();
+      return;
+    }
+
+    this.setData({ memberCardLoading: true, memberCardError: "" });
+
+    try {
+      const cards = await listMemberCards({ toast: options.toast });
+      app.setMemberCards(cards || []);
+      this.refreshCart();
+      this.setData({ memberCardLoading: false });
+    } catch (error) {
+      this.setData({
+        memberCardLoading: false,
+        memberCardError: "会员卡加载失败"
+      });
+    }
   },
 
   normalizeProduct(product) {
@@ -184,6 +290,9 @@ Page({
   openCartSheet() {
     this.refreshCart();
     this.setData({ cartSheetVisible: true });
+    if (app.globalData.token) {
+      this.loadMemberCards({ toast: false });
+    }
   },
 
   closeCartSheet() {
@@ -222,6 +331,28 @@ Page({
 
     app.setCart(cart);
     this.refreshCart();
+  },
+
+  selectMemberCard(event) {
+    const id = event.currentTarget.dataset.id;
+    const nextSelectedId = id === this.data.selectedMemberCardId ? "" : id;
+    const cart = app.globalData.cart.map((item) => ({
+      ...item,
+      priceText: formatMoney(item.unitPriceCents)
+    }));
+    const total = this.calculateCartTotal(cart);
+
+    this.setData(this.getMemberCardState(cart, total, nextSelectedId));
+  },
+
+  clearMemberCard() {
+    const cart = app.globalData.cart.map((item) => ({
+      ...item,
+      priceText: formatMoney(item.unitPriceCents)
+    }));
+    const total = this.calculateCartTotal(cart);
+
+    this.setData(this.getMemberCardState(cart, total, ""));
   },
 
   async validateCartWithProducts() {
@@ -277,24 +408,42 @@ Page({
       await ensureLogin();
       await this.validateCartWithProducts();
 
-      const order = await createOrder({
+      const payload = {
         items: app.globalData.cart.map((item) => ({
           productId: item.productId,
           quantity: item.quantity
         }))
-      });
+      };
+
+      if (this.data.selectedMemberCardId) {
+        payload.memberCardId = this.data.selectedMemberCardId;
+      }
+
+      const order = await createOrder(payload);
 
       app.clearCart();
       app.markCatalogDirty();
+      app.markMemberCardsDirty();
       wx.setStorageSync("lastOrder", order);
-      this.setData({ cartSheetVisible: false });
+      this.setData({
+        cartSheetVisible: false,
+        selectedMemberCardId: "",
+        selectedMemberCard: null
+      });
       wx.navigateTo({
         url: `/pages/order/success?id=${order.id}`
       });
     } catch (error) {
+      const message = error && error.message ? error.message : "";
+      if (["会员卡已失效", "该会员卡今日已使用", "订单中没有该会员卡可用商品"].includes(message)) {
+        this.clearMemberCard();
+        app.markMemberCardsDirty();
+        this.loadMemberCards({ toast: false });
+      }
+
       if (!error || !error.handled) {
         wx.showToast({
-          title: error && error.message ? error.message : "下单失败，请重试",
+          title: message || "下单失败，请重试",
           icon: "none"
         });
       }

@@ -33,14 +33,20 @@ Page({
     try {
       const orders = await listOrders();
       this.setData({
-        orders: (orders || []).map((item) => ({
-          ...item,
-          number: `取餐号 ${item.pickupNo}`,
-          statusText: getStatusText(item.status),
-          products: summarizeOrderItems(item.items || []),
-          createdAtText: formatDateTime(item.createdAt),
-          totalText: formatMoney(item.totalCents)
-        })),
+        orders: (orders || []).map((item) => {
+          const discountCents = Number(item.discountCents || 0);
+          return {
+            ...item,
+            memberCard: item.memberCard || {},
+            number: `取餐号 ${item.pickupNo}`,
+            statusText: getStatusText(item.status),
+            products: summarizeOrderItems(item.items || []),
+            createdAtText: formatDateTime(item.createdAt),
+            totalText: formatMoney(item.totalCents),
+            discountText: formatMoney(discountCents),
+            hasDiscount: discountCents > 0
+          };
+        }),
         loading: false
       });
     } catch (error) {

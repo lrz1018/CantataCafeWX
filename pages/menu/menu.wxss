@@ -241,6 +241,111 @@
   font-size: 26rpx;
 }
 
+.member-card-checkout {
+  margin-top: 8rpx;
+  padding-top: 24rpx;
+  border-top: 2rpx solid #ebe4da;
+}
+
+.member-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24rpx;
+}
+
+.member-card-title {
+  color: #1f1f1f;
+  font-size: 30rpx;
+  font-weight: 800;
+}
+
+.member-card-subtitle,
+.member-card-empty {
+  margin-top: 8rpx;
+  color: #777777;
+  font-size: 24rpx;
+}
+
+.member-card-clear {
+  flex: none;
+  color: #7a4d2b;
+  font-size: 24rpx;
+  font-weight: 700;
+}
+
+.member-card-scroll {
+  margin-top: 18rpx;
+  white-space: nowrap;
+}
+
+.member-card-options {
+  display: flex;
+  gap: 16rpx;
+}
+
+.member-card-option {
+  width: 300rpx;
+  flex: none;
+  padding: 20rpx;
+  border: 2rpx solid #d8d0c4;
+  border-radius: 8rpx;
+  background: #ffffff;
+}
+
+.member-card-option.selected {
+  border-color: #7a4d2b;
+  background: #fff7ec;
+}
+
+.member-card-option-name {
+  overflow: hidden;
+  color: #1f1f1f;
+  font-size: 28rpx;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.member-card-option-meta {
+  margin-top: 8rpx;
+  overflow: hidden;
+  color: #777777;
+  font-size: 22rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.member-card-option-discount {
+  margin-top: 12rpx;
+  color: #7a4d2b;
+  font-size: 24rpx;
+  font-weight: 800;
+}
+
+.member-card-estimate {
+  margin-top: 18rpx;
+  padding: 18rpx 20rpx;
+  border-radius: 8rpx;
+  background: #f6f4ef;
+}
+
+.estimate-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24rpx;
+  color: #777777;
+  font-size: 24rpx;
+  line-height: 1.7;
+}
+
+.estimate-row.payable {
+  color: #1f1f1f;
+  font-size: 28rpx;
+  font-weight: 800;
+}
+
 .cart-bar {
   position: fixed;
   right: 0;

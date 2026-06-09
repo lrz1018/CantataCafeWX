@@ -75,6 +75,22 @@
   font-weight: 800;
 }
 
+.amount-list {
+  margin-top: 20rpx;
+  padding-top: 16rpx;
+  border-top: 2rpx solid #ebe4da;
+}
+
+.amount-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24rpx;
+  color: #777777;
+  font-size: 24rpx;
+  line-height: 1.8;
+}
+
 .total {
   margin-top: 24rpx;
   color: #7a4d2b;

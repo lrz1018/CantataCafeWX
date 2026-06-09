@@ -21,7 +21,17 @@
         </view>
       </view>
       <view wx:if="{{order.remark}}" class="remark">备注：{{order.remark}}</view>
-      <view class="total">合计 {{order.totalText}}</view>
+      <view wx:if="{{order.hasDiscount}}" class="amount-list">
+        <view class="amount-row">
+          <text>原价</text>
+          <text>{{order.originalTotalText}}</text>
+        </view>
+        <view class="amount-row">
+          <text>{{order.memberCard.name}} · {{order.memberCard.discountProductName}}</text>
+          <text>-{{order.discountText}}</text>
+        </view>
+      </view>
+      <view class="total">实付 {{order.totalText}}</view>
     </view>
 
     <view class="actions">

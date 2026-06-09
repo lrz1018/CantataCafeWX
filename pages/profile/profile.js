@@ -50,6 +50,19 @@ Page({
     }
   },
 
+  async openMemberCard() {
+    if (!this.data.loggedIn) {
+      await this.login();
+      if (!app.globalData.token) {
+        return;
+      }
+    }
+
+    wx.navigateTo({
+      url: "/pages/member-card/member-card"
+    });
+  },
+
   onNicknameInput(event) {
     this.setData({ nickname: (event.detail.value || "").slice(0, 80) });
   },

@@ -13,6 +13,7 @@
     <view class="action-list">
       <button wx:if="{{!loggedIn}}" class="action-row" bindtap="login">微信登录</button>
       <button wx:else class="action-row" bindtap="logout">退出登录</button>
+      <button class="action-row" bindtap="openMemberCard">会员卡</button>
       <button class="action-row" bindtap="clearCart">清空购物车</button>
     </view>
   </view>
