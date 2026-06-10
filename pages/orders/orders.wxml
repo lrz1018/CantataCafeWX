@@ -19,7 +19,10 @@
     >
       <view class="order-header">
         <view class="order-number">{{item.number}}</view>
-        <view class="order-status">{{item.statusText}}</view>
+        <view class="order-status-group">
+          <view class="order-status">{{item.statusText}}</view>
+          <view class="payment-status">{{item.paymentStatusText}}</view>
+        </view>
       </view>
       <view class="order-products">{{item.products}}</view>
       <view class="order-footer">
@@ -28,6 +31,17 @@
           <text wx:if="{{item.hasDiscount}}" class="order-discount">{{item.memberCard.name}} -{{item.discountText}}</text>
           <text class="order-total">{{item.totalText}}</text>
         </view>
+      </view>
+      <view wx:if="{{item.showPaymentAction}}" class="order-actions">
+        <button
+          class="primary-button order-pay-button"
+          catchtap="handleOrderPayment"
+          data-id="{{item.id}}"
+          loading="{{payingOrderId === item.id}}"
+          disabled="{{payingOrderId !== ''}}"
+        >
+          {{item.paymentActionText}}
+        </button>
       </view>
     </view>
   </block>

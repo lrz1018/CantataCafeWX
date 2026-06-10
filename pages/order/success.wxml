@@ -3,10 +3,11 @@
 
   <block wx:elif="{{order}}">
     <view class="success-header">
-      <view class="success-title">下单成功</view>
+      <view class="success-title">{{order.successTitle}}</view>
       <view class="pickup-label">取餐号</view>
       <view class="pickup-no">{{order.pickupNo}}</view>
       <view class="status">{{order.statusText}}</view>
+      <view class="payment-status">{{order.paymentStatusText}}</view>
     </view>
 
     <view class="section">

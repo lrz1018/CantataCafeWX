@@ -14,14 +14,23 @@ function listOrders() {
   });
 }
 
-function getOrder(id) {
+function getOrder(id, options = {}) {
   return request({
-    url: `/api/v1/orders/${id}`
+    url: `/api/v1/orders/${id}`,
+    toast: options.toast
+  });
+}
+
+function retryOrderPayment(id) {
+  return request({
+    url: `/api/v1/orders/${id}/pay`,
+    method: "POST"
   });
 }
 
 module.exports = {
   createOrder,
   listOrders,
-  getOrder
+  getOrder,
+  retryOrderPayment
 };

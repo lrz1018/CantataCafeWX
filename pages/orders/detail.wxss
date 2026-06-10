@@ -30,6 +30,18 @@
   font-weight: 800;
 }
 
+.status-group {
+  flex: none;
+  text-align: right;
+}
+
+.payment-status {
+  margin-top: 8rpx;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
 .info-row {
   display: flex;
   align-items: center;
@@ -96,6 +108,15 @@
   color: #7a4d2b;
   font-size: 36rpx;
   text-align: right;
+}
+
+.actions {
+  margin-top: 36rpx;
+}
+
+.action-button {
+  width: 100%;
+  margin: 0;
 }
 
 .state {

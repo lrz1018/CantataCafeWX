@@ -1,5 +1,5 @@
 const { getOrder } = require("../../services/order");
-const { formatMoney, formatDateTime, getStatusText } = require("../../utils/format");
+const { formatMoney, formatDateTime, getPaymentStatusText, getStatusText } = require("../../utils/format");
 
 Page({
   data: {
@@ -35,8 +35,10 @@ Page({
     this.setData({
       order: {
         ...order,
+        successTitle: this.getSuccessTitle(order),
         memberCard: order.memberCard || {},
         statusText: getStatusText(order.status),
+        paymentStatusText: getPaymentStatusText(order.paymentStatus),
         createdAtText: formatDateTime(order.createdAt),
         originalTotalText: formatMoney(originalTotalCents),
         discountText: formatMoney(discountCents),
@@ -50,6 +52,22 @@ Page({
       },
       loading: false
     });
+  },
+
+  getSuccessTitle(order) {
+    if (order.paymentStatus === "PAID") {
+      return "支付成功";
+    }
+
+    if (order.paymentStatus === "PENDING") {
+      return "支付确认中";
+    }
+
+    if (order.paymentStatus === "FAILED") {
+      return "支付未完成";
+    }
+
+    return "下单成功";
   },
 
   goMenu() {

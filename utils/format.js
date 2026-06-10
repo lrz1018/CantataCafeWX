@@ -36,6 +36,18 @@ function getStatusText(status) {
   return map[status] || status || "";
 }
 
+function getPaymentStatusText(status) {
+  const map = {
+    UNPAID: "未支付",
+    PENDING: "支付确认中",
+    PAID: "已支付",
+    FAILED: "支付失败",
+    CLOSED: "支付已关闭"
+  };
+
+  return map[status] || status || "";
+}
+
 function getMemberCardTypeText(type) {
   const map = {
     HALF_PRICE: "每日半价卡",
@@ -113,6 +125,7 @@ module.exports = {
   formatMoney,
   formatCount,
   formatDateTime,
+  getPaymentStatusText,
   getStatusText,
   getMemberCardTypeText,
   getMemberCardSourceText,

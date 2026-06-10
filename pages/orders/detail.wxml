@@ -8,12 +8,23 @@
         <view class="pickup-label">取餐号</view>
         <view class="pickup-no">{{order.pickupNo}}</view>
       </view>
-      <view class="status">{{order.statusText}}</view>
+      <view class="status-group">
+        <view class="status">{{order.statusText}}</view>
+        <view class="payment-status">{{order.paymentStatusText}}</view>
+      </view>
     </view>
 
     <view class="info-row">
       <text>下单时间</text>
       <text>{{order.createdAtText}}</text>
+    </view>
+    <view wx:if="{{order.paidAtText}}" class="info-row">
+      <text>支付时间</text>
+      <text>{{order.paidAtText}}</text>
+    </view>
+    <view class="info-row">
+      <text>支付状态</text>
+      <text>{{order.paymentStatusText}}</text>
     </view>
     <view wx:if="{{order.remark}}" class="info-row remark-row">
       <text>备注</text>
@@ -42,6 +53,17 @@
         </view>
       </view>
       <view class="total">实付 {{order.totalText}}</view>
+    </view>
+
+    <view wx:if="{{order.showPaymentAction}}" class="actions">
+      <button
+        class="primary-button action-button"
+        bindtap="handleOrderPayment"
+        loading="{{paying}}"
+        disabled="{{paying}}"
+      >
+        {{order.paymentActionText}}
+      </button>
     </view>
   </block>
 </view>

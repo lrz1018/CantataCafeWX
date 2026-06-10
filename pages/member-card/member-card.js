@@ -15,29 +15,7 @@ const {
   getMemberCardPurchaseStatusText,
   summarizeProducts
 } = require("../../utils/format");
-
-function delay(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-function requestPayment(payParams = {}) {
-  return new Promise((resolve, reject) => {
-    if (!payParams.timeStamp || !payParams.nonceStr || !payParams.packageValue || !payParams.paySign) {
-      reject(new Error("微信支付参数不完整"));
-      return;
-    }
-
-    wx.requestPayment({
-      timeStamp: payParams.timeStamp,
-      nonceStr: payParams.nonceStr,
-      package: payParams.packageValue,
-      signType: payParams.signType || "RSA",
-      paySign: payParams.paySign,
-      success: resolve,
-      fail: reject
-    });
-  });
-}
+const { delay, requestWechatPayment } = require("../../utils/payment");
 
 Page({
   data: {
@@ -162,7 +140,7 @@ Page({
         purchaseStatusText: "正在调起微信支付..."
       });
 
-      await requestPayment(order.payParams || {});
+      await requestWechatPayment(order.payParams || {});
       this.setData({ purchaseStatusText: "正在确认支付结果..." });
       await this.pollPurchaseOrder(order.id);
     } catch (error) {

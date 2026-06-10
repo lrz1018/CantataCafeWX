@@ -4,6 +4,7 @@ const { createOrder } = require("../../services/order");
 const { listMemberCards } = require("../../services/member-card");
 const { ensureLogin } = require("../../utils/auth");
 const { formatMoney, getMemberCardTypeText, normalizeImageUrl } = require("../../utils/format");
+const { confirmOrderPayment, isPaymentCancel, requestWechatPayment } = require("../../utils/payment");
 
 Page({
   data: {
@@ -34,6 +35,8 @@ Page({
   },
 
   onShow() {
+    this.orderPaymentStopped = false;
+
     if (app.consumeCatalogDirty()) {
       this.loadMenu();
     }
@@ -50,6 +53,10 @@ Page({
 
   onPullDownRefresh() {
     this.loadMenu().finally(() => wx.stopPullDownRefresh());
+  },
+
+  onUnload() {
+    this.orderPaymentStopped = true;
   },
 
   async loadMenu() {
@@ -419,19 +426,60 @@ Page({
         payload.memberCardId = this.data.selectedMemberCardId;
       }
 
-      const order = await createOrder(payload);
+      const usedMemberCard = !!payload.memberCardId;
+      let order = await createOrder(payload);
 
       app.clearCart();
       app.markCatalogDirty();
-      app.markMemberCardsDirty();
-      wx.setStorageSync("lastOrder", order);
+      if (usedMemberCard) {
+        app.markMemberCardsDirty();
+      }
       this.setData({
         cartSheetVisible: false,
         selectedMemberCardId: "",
         selectedMemberCard: null
       });
+
+      if (order.payParams && order.paymentStatus !== "PAID") {
+        try {
+          wx.showLoading({ title: "正在支付..." });
+          await requestWechatPayment(order.payParams);
+          wx.hideLoading();
+          wx.showLoading({ title: "确认支付结果..." });
+          const confirmedOrder = await confirmOrderPayment(order.id, {
+            shouldStop: () => !!this.orderPaymentStopped
+          });
+          if (confirmedOrder) {
+            order = confirmedOrder;
+          }
+
+          if (order.paymentStatus === "PAID") {
+            wx.showToast({
+              title: "支付成功",
+              icon: "success"
+            });
+          } else if (order.paymentStatus === "PENDING") {
+            wx.showToast({
+              title: "支付结果确认中，请稍后刷新",
+              icon: "none"
+            });
+          }
+        } catch (payError) {
+          wx.hideLoading();
+          wx.showToast({
+            title: isPaymentCancel(payError) ? "已取消支付，可在订单详情继续支付" : "支付未完成，请稍后重试",
+            icon: "none"
+          });
+        } finally {
+          wx.hideLoading();
+        }
+      }
+
+      wx.setStorageSync("lastOrder", order);
       wx.navigateTo({
-        url: `/pages/order/success?id=${order.id}`
+        url: order.paymentStatus === "PAID"
+          ? `/pages/order/success?id=${order.id}`
+          : `/pages/orders/detail?id=${order.id}`
       });
     } catch (error) {
       const message = error && error.message ? error.message : "";
