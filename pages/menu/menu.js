@@ -1,5 +1,5 @@
 const app = getApp();
-const { listBanners, listCategories, listProducts, getProduct } = require("../../services/menu");
+const { listCategories, listProducts, getProduct } = require("../../services/menu");
 const { createOrder } = require("../../services/order");
 const { listMemberCards } = require("../../services/member-card");
 const { ensureLogin } = require("../../utils/auth");
@@ -8,13 +8,15 @@ const { confirmOrderPayment, isPaymentCancel, requestWechatPayment } = require("
 
 Page({
   data: {
-    banners: [],
     categories: [],
     products: [],
     filteredProducts: [],
     activeCategoryId: "all",
+    searchKeyword: "",
+    sectionTitle: "人气咖啡",
     cart: [],
     totalText: "¥0.00",
+    totalCount: 0,
     cartSheetVisible: false,
     memberCardLoading: false,
     memberCardError: "",
@@ -63,28 +65,23 @@ Page({
     this.setData({ loading: true, error: "" });
 
     try {
-      const [banners, categories, products] = await Promise.all([
-        listBanners(),
+      const [categories, products] = await Promise.all([
         listCategories(),
         listProducts()
       ]);
 
-      const normalizedProducts = (products || []).map((item) => this.normalizeProduct(item));
+      const normalizedProducts = this.decorateProductsWithCart((products || []).map((item) => this.normalizeProduct(item)));
       const normalizedCategories = [
         { id: "all", name: "全部" },
         ...(categories || [])
       ];
 
       this.setData({
-        banners: (banners || []).map((item) => ({
-          ...item,
-          imageSrc: normalizeImageUrl(item.imageUrl)
-        })),
         categories: normalizedCategories,
         products: normalizedProducts,
         loading: false
       });
-      this.applyFilter(this.data.activeCategoryId, normalizedProducts);
+      this.applyFilter(this.data.activeCategoryId, normalizedProducts, this.data.searchKeyword);
     } catch (error) {
       this.setData({
         loading: false,
@@ -99,13 +96,18 @@ Page({
       priceText: formatMoney(item.unitPriceCents)
     }));
     const total = cart.reduce((sum, item) => sum + item.unitPriceCents * item.quantity, 0);
+    const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
     const memberCardState = this.getMemberCardState(cart, total, this.data.selectedMemberCardId);
+    const products = this.decorateProductsWithCart(this.data.products);
 
     this.setData({
       cart,
       totalText: formatMoney(total),
+      totalCount,
+      products,
       ...memberCardState
     });
+    this.applyFilter(this.data.activeCategoryId, products, this.data.searchKeyword);
   },
 
   calculateCartTotal(cart) {
@@ -212,24 +214,62 @@ Page({
     };
   },
 
-  selectCategory(event) {
-    const id = event.currentTarget.dataset.id;
-    this.applyFilter(id, this.data.products);
+  decorateProductsWithCart(products) {
+    const quantityMap = app.globalData.cart.reduce((map, item) => {
+      map[item.productId] = Number(item.quantity || 0);
+      return map;
+    }, {});
+
+    return (products || []).map((item) => ({
+      ...item,
+      cartQuantity: quantityMap[item.id] || 0
+    }));
   },
 
-  applyFilter(id, products) {
-    const filteredProducts = id === "all"
+  selectCategory(event) {
+    const id = event.currentTarget.dataset.id;
+    this.applyFilter(id, this.data.products, this.data.searchKeyword);
+  },
+
+  handleSearchInput(event) {
+    this.applyFilter(this.data.activeCategoryId, this.data.products, event.detail.value);
+  },
+
+  clearSearch() {
+    this.applyFilter(this.data.activeCategoryId, this.data.products, "");
+  },
+
+  applyFilter(id, products, keyword = "") {
+    const currentCategory = this.data.categories.find((item) => item.id === id);
+    const normalizedKeyword = String(keyword || "").trim().toLowerCase();
+    const categoryProducts = id === "all"
       ? products
       : products.filter((item) => item.categoryId === id);
+    const filteredProducts = normalizedKeyword
+      ? categoryProducts.filter((item) => {
+          const text = `${item.name || ""} ${item.description || ""}`.toLowerCase();
+          return text.includes(normalizedKeyword);
+        })
+      : categoryProducts;
 
     this.setData({
       activeCategoryId: id,
-      filteredProducts
+      searchKeyword: keyword,
+      filteredProducts,
+      sectionTitle: id === "all"
+        ? (normalizedKeyword ? "搜索结果" : "人气咖啡")
+        : (currentCategory && currentCategory.name ? currentCategory.name : "商品")
     });
   },
 
   addToCart(event) {
-    const product = event.detail;
+    const product = event.detail && event.detail.id
+      ? event.detail
+      : this.data.products.find((item) => item.id === event.currentTarget.dataset.id);
+    if (!product) {
+      return;
+    }
+
     if (product.soldOut) {
       wx.showToast({
         title: "商品已售罄",
@@ -271,27 +311,17 @@ Page({
 
     app.setCart(cart);
     this.refreshCart();
-    wx.showToast({
-      title: "已加入购物车",
-      icon: "success"
-    });
   },
 
   openProduct(event) {
-    const id = event.detail.id;
+    const id = event.detail && event.detail.id ? event.detail.id : event.currentTarget.dataset.id;
+    if (!id) {
+      return;
+    }
+
     wx.navigateTo({
       url: `/pages/product/detail?id=${id}`
     });
-  },
-
-  handleBannerTap(event) {
-    const linkUrl = event.currentTarget.dataset.link || "";
-    const match = linkUrl.match(/^cttcafe:\/\/product\/(.+)$/);
-    if (match && match[1]) {
-      wx.navigateTo({
-        url: `/pages/product/detail?id=${match[1]}`
-      });
-    }
   },
 
   openCartSheet() {

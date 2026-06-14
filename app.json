@@ -28,7 +28,7 @@
       },
       {
         "pagePath": "pages/menu/menu",
-        "text": "菜单"
+        "text": "点单"
       },
       {
         "pagePath": "pages/orders/orders",

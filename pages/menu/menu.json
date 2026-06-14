@@ -1,7 +1,4 @@
 {
-  "navigationBarTitleText": "菜单",
-  "enablePullDownRefresh": true,
-  "usingComponents": {
-    "menu-card": "/components/menu-card/menu-card"
-  }
+  "navigationStyle": "custom",
+  "enablePullDownRefresh": true
 }

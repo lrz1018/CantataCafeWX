@@ -1,29 +1,41 @@
 <view class="page menu-page">
-  <swiper wx:if="{{banners.length}}" class="banner-swiper" indicator-dots autoplay circular>
-    <swiper-item wx:for="{{banners}}" wx:key="id">
-      <image
-        class="banner-image"
-        src="{{item.imageSrc}}"
-        mode="aspectFill"
-        bindtap="handleBannerTap"
-        data-link="{{item.linkUrl}}"
-      />
-    </swiper-item>
-  </swiper>
-
-  <scroll-view class="category-bar" scroll-x="true" show-scrollbar="false">
-    <view class="category-list">
-      <view
-        wx:for="{{categories}}"
-        wx:key="id"
-        class="category-item {{activeCategoryId === item.id ? 'active' : ''}}"
-        bindtap="selectCategory"
-        data-id="{{item.id}}"
-      >
-        {{item.name}}
+  <view class="menu-hero">
+    <view class="top-row">
+      <view class="time-space"></view>
+      <view class="page-title">在线点单</view>
+      <view class="more-button">
+        <view class="more-dot"></view>
+        <view class="more-dot"></view>
+        <view class="more-dot"></view>
       </view>
     </view>
-  </scroll-view>
+
+    <view class="search-box">
+      <input
+        class="search-input"
+        value="{{searchKeyword}}"
+        placeholder="搜索咖啡、甜品、轻食"
+        placeholder-class="search-placeholder"
+        confirm-type="search"
+        bindinput="handleSearchInput"
+      />
+      <view wx:if="{{searchKeyword}}" class="search-clear" catchtap="clearSearch">×</view>
+    </view>
+
+    <scroll-view class="category-bar" scroll-x="true" show-scrollbar="false">
+      <view class="category-list">
+        <view
+          wx:for="{{categories}}"
+          wx:key="id"
+          class="category-item {{activeCategoryId === item.id ? 'active' : ''}}"
+          bindtap="selectCategory"
+          data-id="{{item.id}}"
+        >
+          {{item.name}}
+        </view>
+      </view>
+    </scroll-view>
+  </view>
 
   <view wx:if="{{loading}}" class="state">菜单加载中...</view>
   <view wx:elif="{{error}}" class="state error">{{error}}</view>
@@ -31,13 +43,39 @@
   <view wx:elif="{{!filteredProducts.length}}" class="state">当前分类暂无商品</view>
 
   <view wx:else class="product-list">
-    <menu-card
+    <view class="section-title">{{sectionTitle}}</view>
+    <view
       wx:for="{{filteredProducts}}"
       wx:key="id"
-      item="{{item}}"
-      bind:add="addToCart"
-      bind:open="openProduct"
-    />
+      class="product-card"
+      bindtap="openProduct"
+      data-id="{{item.id}}"
+    >
+      <view class="product-media">
+        <image
+          wx:if="{{item.imageSrc}}"
+          class="product-image"
+          src="{{item.imageSrc}}"
+          mode="aspectFill"
+        />
+        <view wx:else class="cup-icon">
+          <view class="cup-body"></view>
+          <view class="cup-handle"></view>
+        </view>
+      </view>
+
+      <view class="product-main">
+        <view class="product-name">{{item.name}}</view>
+        <view class="product-desc">{{item.description || '热 / 冰 · 甜度可调'}}</view>
+        <view class="product-price">{{item.priceText}}</view>
+      </view>
+
+      <view class="product-counter">
+        <button class="quantity-button minus" catchtap="decrease" data-id="{{item.id}}">−</button>
+        <text class="quantity-count">{{item.cartQuantity}}</text>
+        <button class="quantity-button plus {{item.soldOut ? 'disabled' : ''}}" catchtap="addToCart" data-id="{{item.id}}">+</button>
+      </view>
+    </view>
   </view>
 
   <view wx:if="{{cartSheetVisible}}" class="cart-sheet-mask" catchtap="closeCartSheet"></view>
@@ -118,16 +156,24 @@
     </view>
   </view>
 
-  <view class="cart-bar">
-    <view class="cart-total" bindtap="openCartSheet">
-      <view class="cart-total-label">合计</view>
-      <view class="cart-total-price">{{totalText}}</view>
+  <view class="checkout-bar">
+    <view class="checkout-summary" bindtap="openCartSheet">
+      <view class="summary-icon">
+        <view class="summary-cup">
+          <view class="summary-cup-body"></view>
+          <view class="summary-cup-handle"></view>
+        </view>
+      </view>
+      <view class="summary-text">
+        <view class="summary-count">已选 {{totalCount}} 件</view>
+        <view class="summary-total">合计 {{totalText}}</view>
+      </view>
     </view>
     <view
       class="checkout-button {{submitting || !cart.length ? 'disabled' : ''}}"
       catchtap="checkoutFromBar"
     >
-      {{submitting ? '提交中' : '下单'}}
+      {{submitting ? '提交中' : '去结算'}}
     </view>
   </view>
 </view>
