@@ -1,20 +1,62 @@
-<view class="page home-page">
-  <view class="hero">
-    <view class="hero-title">Cantata Cafe</view>
-    <view class="hero-subtitle">一杯咖啡的时间，安排好今天的节奏。</view>
-    <button class="primary-button hero-action" bindtap="goMenu">开始点单</button>
+<view class="home-page">
+  <view class="home-nav" style="height: {{navTotalHeight}}px; padding-top: {{statusBarHeight}}px;">
+    <view class="home-nav-title" style="height: {{navBarHeight}}px; padding-right: {{navRightSpace}}px;">CantataCafe</view>
   </view>
 
-  <view class="section">
-    <view class="section-title">今日推荐</view>
-    <view wx:if="{{loading}}" class="recommend-empty">推荐加载中...</view>
-    <view wx:elif="{{!recommendations.length}}" class="recommend-empty">暂无推荐商品</view>
-    <view wx:else class="recommend-list">
-      <view wx:for="{{recommendations}}" wx:key="id" class="recommend-item" bindtap="openProduct" data-id="{{item.id}}">
-        <view class="recommend-name">{{item.name}}</view>
-        <view class="recommend-desc">{{item.description}}</view>
-        <view class="recommend-price">{{item.priceText}}</view>
+  <view class="home-content" style="padding-top: {{navTotalHeight}}px;">
+    <view class="greeting">早上好，今天想喝点什么？</view>
+    <view class="store-line">南京 · CantataCafe 旗舰店</view>
+
+    <view wx:if="{{loading}}" class="home-state">推荐加载中...</view>
+    <view wx:elif="{{error}}" class="home-state error">{{error}}</view>
+
+    <block wx:if="{{!loading && !error}}">
+      <view
+        wx:if="{{featuredProduct}}"
+        class="featured-card"
+        bindtap="openProduct"
+        data-id="{{featuredProduct.id}}"
+      >
+        <view class="featured-main">
+          <view class="featured-label">今日推荐</view>
+          <view class="featured-name">{{featuredProduct.name}}</view>
+          <view class="featured-desc">{{featuredProduct.descriptionText}}</view>
+        </view>
+        <view class="featured-art">
+          <view class="cup-icon large">
+            <view class="cup-body"></view>
+            <view class="cup-handle"></view>
+          </view>
+        </view>
       </view>
-    </view>
+
+      <view wx:if="{{!featuredProduct}}" class="home-state">暂无推荐商品</view>
+
+      <button class="order-button" bindtap="goMenu">立即点单</button>
+
+      <view class="hot-section">
+        <view class="hot-title">热卖单品</view>
+        <view wx:if="{{hotProducts.length}}" class="hot-grid">
+          <view
+            wx:for="{{hotProducts}}"
+            wx:key="id"
+            class="hot-card"
+            bindtap="openProduct"
+            data-id="{{item.id}}"
+          >
+            <view class="hot-art {{item.toneClass}}">
+              <view class="cup-icon">
+                <view class="cup-body"></view>
+                <view class="cup-handle"></view>
+                <view wx:if="{{item.showFoam}}" class="cup-foam"></view>
+              </view>
+            </view>
+            <view class="hot-name">{{item.name}}</view>
+            <view class="hot-price">{{item.priceText}}</view>
+          </view>
+        </view>
+        <view wx:if="{{!hotProducts.length}}" class="home-state small">暂无热卖商品</view>
+      </view>
+    </block>
   </view>
 </view>

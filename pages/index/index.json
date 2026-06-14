@@ -1,3 +1,5 @@
 {
-  "navigationBarTitleText": "Cantata Cafe"
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "CantataCafe",
+  "enablePullDownRefresh": true
 }
